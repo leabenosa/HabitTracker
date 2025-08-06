@@ -110,4 +110,22 @@ buttonText: {
   fontWeight: 'bold',
 },
 
+  card: {
+    width: '100%',
+    padding: 10,
+  },
+  cardContent: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    marginVertical: 4,
+  },
+  actions: {
+    justifyContent: 'flex-end',
+  },
+
 });
+
+export default styles;
