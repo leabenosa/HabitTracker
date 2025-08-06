@@ -1,5 +1,5 @@
+// styles.ts
 import { StyleSheet } from 'react-native';
-
 
 export const styles = StyleSheet.create({
   container: {
@@ -22,29 +22,26 @@ export const styles = StyleSheet.create({
     marginBottom: 18,
     marginTop: -1,
   },
- input: {
-  flex: 1,
-  height: 40,          // outer height
-  marginRight: 8,
-},
-
-inputContent: {
-  height: 15,          // inner text input height
-},
-
-button: {
-  height: 40, // or 36, depending on how small you want
-  justifyContent: 'center',
-  paddingHorizontal: 12,
-  borderRadius: 8,
-  marginLeft: 8, // spacing from the input
-   marginBottom: 18,
-     marginTop: 10,
-},
-buttonLabel: {
-  fontSize: 8, // smaller text
-},
-
+  input: {
+    flex: 1,
+    height: 40,
+    marginRight: 8,
+  },
+  inputContent: {
+    height: 15,
+  },
+  button: {
+    height: 40,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginLeft: 8,
+    marginBottom: 18,
+    marginTop: 10,
+  },
+  buttonLabel: {
+    fontSize: 8,
+  },
   instruction: {
     fontSize: 10,
     fontStyle: 'italic',
@@ -53,16 +50,16 @@ buttonLabel: {
     marginBottom: 10,
   },
   habitItem: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between', 
-  paddingVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
   },
   habitText: {
-  fontSize: 18,
-  color: '#4A148C',
-  flex: 1, 
-},
+    fontSize: 18,
+    color: '#4A148C',
+    flex: 1,
+  },
   emptyText: {
     fontStyle: 'italic',
     alignSelf: 'center',
@@ -73,32 +70,47 @@ buttonLabel: {
     flexGrow: 1,
     justifyContent: 'center',
   },
- doneButtonDone: {
+  doneButtonDone: {
     marginTop: 8,
-    backgroundColor: '#7961a5ff', 
+    backgroundColor: '#7961a5ff',
   },
   doneButton: {
-    backgroundColor: '#827492ff', 
+    backgroundColor: '#827492ff',
   },
   doneButtonLabel: {
-    color: '#efecf3ff', 
+    color: '#efecf3ff',
   },
   doneButtonLabelDone: {
     color: 'white',
   },
-glassButton: {
-  borderRadius: 12,
-  paddingVertical: 8,
-  paddingHorizontal: 16,
-  marginTop: 8,
-  alignItems: 'center',
-},
+  glassButton: {
+    borderRadius: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginTop: 8,
+    alignItems: 'center',
+  },
+  glassButtonDefault: {
+    borderWidth: 1,
+    borderColor: 'rgba(96, 43, 219, 0.3)',
+  },
+  glassButtonDone: {
+    borderWidth: 1,
+    borderColor: 'rgba(153, 100, 221, 0.5)',
+  },
+  buttonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  screenText: {
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 50,
+  },
 
-glassButtonDefault: {
-  borderWidth: 1,
-  borderColor: 'rgba(96, 43, 219, 0.3)',
-},
 
+<<<<<<< HEAD
 glassButtonDone: {
   borderWidth: 1,
   borderColor: 'rgba(153, 100, 221, 0.5)', 
@@ -129,3 +141,6 @@ buttonText: {
 });
 
 export default styles;
+=======
+});
+>>>>>>> b8b60eab267365b5a160c563e3f1f922ed74fa42
