@@ -1,5 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { FlatList, View, TouchableOpacity } from 'react-native';
+import {
+  FlatList,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {
   Provider as PaperProvider,
   Text,
@@ -13,13 +17,19 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from './components/styles';
 import LinearGradient from 'react-native-linear-gradient';
 
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ProfileScreen, DoneScreen, UndoneScreen } from './components/DummyScreen';
+
+
 type Habit = {
   id: string;
   name: string;
   doneToday: boolean;
 };
 
-// 💜 Custom violet theme
+// 💜 Custom theme
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -33,7 +43,7 @@ const theme = {
   },
 };
 
-function AppContent() {
+function HomeScreen() {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [newHabit, setNewHabit] = useState('');
 
@@ -83,36 +93,33 @@ function AppContent() {
   const renderSeparator = useCallback(() => <Divider />, []);
 
   const renderHabitItem = useCallback(
-  ({ item }: { item: Habit }) => (
-    <View style={styles.habitItem}>
-      <Text style={styles.habitText}>{item.name}</Text>
-      
-    <TouchableOpacity onPress={() => toggleHabit(item.id)}>
+    ({ item }: { item: Habit }) => (
+      <View style={styles.habitItem}>
+        <Text style={styles.habitText}>{item.name}</Text>
 
-  <LinearGradient
-    colors={
-      item.doneToday
-        ? ['rgba(97, 22, 167, 0.57)', 'rgba(33, 30, 170, 0.16)'] // Green glass
-        : ['rgba(37, 58, 175, 0.68)', 'rgba(88, 11, 139, 0.89)']     // Default glass
-    }
-    style={[
-      styles.glassButton,
-      item.doneToday ? styles.glassButtonDone : styles.glassButtonDefault,
-    ]}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
-  >
-    <Text style={styles.buttonText}>
-      {item.doneToday ? 'Done' : '✓ Mark as Done '}
-    </Text>
-  </LinearGradient>
-</TouchableOpacity>
-
-    </View>
-  ),
-  [toggleHabit]
-);
-
+        <TouchableOpacity onPress={() => toggleHabit(item.id)}>
+          <LinearGradient
+            colors={
+              item.doneToday
+                ? ['rgba(97, 22, 167, 0.57)', 'rgba(33, 30, 170, 0.16)']
+                : ['rgba(37, 58, 175, 0.68)', 'rgba(88, 11, 139, 0.89)']
+            }
+            style={[
+              styles.glassButton,
+              item.doneToday ? styles.glassButtonDone : styles.glassButtonDefault,
+            ]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
+            <Text style={styles.buttonText}>
+              {item.doneToday ? 'Done' : '✓ Mark as Done'}
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+    ),
+    [toggleHabit]
+  );
 
   return (
     <View style={styles.container}>
@@ -154,11 +161,37 @@ function AppContent() {
   );
 }
 
+
+
+const Tab = createBottomTabNavigator();
+
+const getScreenOptions = ({ route }: { route: { name: string } }) => ({
+  headerShown: false,
+  tabBarIcon: ({ color, size }: { color: string; size: number }) => {
+    let iconName = 'home';
+
+    if (route.name === 'Profile') iconName = 'account';
+    else if (route.name === 'Done') iconName = 'check-circle';
+    else if (route.name === 'Undone') iconName = 'close-circle';
+
+    return <Icon name={iconName} size={size} color={color} />;
+  },
+  tabBarActiveTintColor: '#7C4DFF',
+  tabBarInactiveTintColor: 'gray',
+});
+
 export default function App() {
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
-        <AppContent />
+        <NavigationContainer>
+          <Tab.Navigator screenOptions={getScreenOptions}>
+            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Done" component={DoneScreen} />
+            <Tab.Screen name="Undone" component={UndoneScreen} />
+            <Tab.Screen name="Profile" component={ProfileScreen} />
+          </Tab.Navigator>
+        </NavigationContainer>
       </PaperProvider>
     </SafeAreaProvider>
   );
