@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, TouchableOpacity } from 'react-native';
 import {
   Provider as PaperProvider,
   Text,
@@ -10,6 +10,8 @@ import {
 } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { styles } from './components/styles';
+import LinearGradient from 'react-native-linear-gradient';
 
 type Habit = {
   id: string;
@@ -22,11 +24,11 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#7C4DFF',       // Deep violet
-    accent: '#B388FF',        // Light violet
-    background: '#F3E5F5',    // Very light violet
-    surface: '#EDE7F6',       // Paper surface
-    text: '#4A148C',          // Dark violet
+    primary: '#7C4DFF',
+    accent: '#B388FF',
+    background: '#F3E5F5',
+    surface: '#EDE7F6',
+    text: '#4A148C',
     placeholder: '#9575CD',
   },
 };
@@ -63,13 +65,11 @@ function AppContent() {
 
   const addHabit = useCallback(() => {
     if (newHabit.trim().length === 0) return;
-
     const habit: Habit = {
       id: Date.now().toString(),
       name: newHabit.trim(),
       doneToday: false,
     };
-
     setHabits((prev) => [habit, ...prev]);
     setNewHabit('');
   }, [newHabit]);
@@ -82,25 +82,31 @@ function AppContent() {
 
   const renderSeparator = useCallback(() => <Divider />, []);
 
- const renderHabitItem = useCallback(
+  const renderHabitItem = useCallback(
   ({ item }: { item: Habit }) => (
     <View style={styles.habitItem}>
       <Text style={styles.habitText}>{item.name}</Text>
       
-   <Button
-  mode="contained"
-  onPress={() => toggleHabit(item.id)}
-  style={[styles.doneButton, item.doneToday && styles.doneButtonDone]}
-  labelStyle={[
-    styles.doneButtonLabel,
-    item.doneToday && styles.doneButtonLabelDone
-  ]}
-  icon={item.doneToday ? 'check' : undefined}
->
-  {item.doneToday ? 'Done' : 'Done for today'}
-</Button>
+    <TouchableOpacity onPress={() => toggleHabit(item.id)}>
 
-
+  <LinearGradient
+    colors={
+      item.doneToday
+        ? ['rgba(97, 22, 167, 0.57)', 'rgba(33, 30, 170, 0.16)'] // Green glass
+        : ['rgba(37, 58, 175, 0.68)', 'rgba(88, 11, 139, 0.89)']     // Default glass
+    }
+    style={[
+      styles.glassButton,
+      item.doneToday ? styles.glassButtonDone : styles.glassButtonDefault,
+    ]}
+    start={{ x: 0, y: 0 }}
+    end={{ x: 1, y: 1 }}
+  >
+    <Text style={styles.buttonText}>
+      {item.doneToday ? 'Done' : '✓ Mark as Done '}
+    </Text>
+  </LinearGradient>
+</TouchableOpacity>
 
     </View>
   ),
@@ -118,20 +124,18 @@ function AppContent() {
           value={newHabit}
           onChangeText={setNewHabit}
           mode="outlined"
+          dense
           style={styles.input}
+          contentStyle={styles.inputContent}
         />
-        <Button
-  mode="contained"
-  onPress={addHabit}
-  style={styles.button}
->
-  Add Habit
-</Button>
 
+        <Button mode="contained" onPress={addHabit} style={styles.button}>
+          Add Habit
+        </Button>
       </View>
 
       {habits.length > 0 && (
-        <Text style={styles.instruction}>Tap checkbox to mark "Done for today"</Text>
+        <Text style={styles.instruction}>Tap 'Done' to mark as complete</Text>
       )}
 
       <FlatList
@@ -159,79 +163,3 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    paddingTop: 50,
-    backgroundColor: '#F3E5F5',
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    alignSelf: 'center',
-    color: '#4A148C',
-  },
-  inputRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  input: {
-    flex: 1,
-    marginRight: 10,
-  },
-  button: {
-    alignSelf: 'stretch',
-     marginBottom: 20,
-    height: 56,
-    justifyContent: 'center',
-  },
-  instruction: {
-    fontSize: 14,
-    fontStyle: 'italic',
-    color: '#7E57C2',
-    alignSelf: 'center',
-    marginBottom: 10,
-  },
-  habitItem: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between', 
-  paddingVertical: 8,
-  },
-  habitText: {
-  fontSize: 18,
-  color: '#4A148C',
-  flex: 1, 
-},
-
-  emptyText: {
-    fontStyle: 'italic',
-    alignSelf: 'center',
-    marginTop: 20,
-    color: '#9575CD',
-  },
-  emptyContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
- doneButton: {
-    marginTop: 8,
-    backgroundColor: '#D1C4E9', 
-  },
-  doneButtonDone: {
-    backgroundColor: '#4A148C', 
-  },
-  doneButtonLabel: {
-    color: '#4A148C', 
-  },
-  doneButtonLabelDone: {
-    color: 'white',
-  },
-
-
-
-});
