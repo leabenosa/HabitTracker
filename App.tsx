@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import HomeScreen from './screens/HomeScreen';         // Main screen
-import ProfileScreen from './screens/ProfileScreen';   // User details
-import HabitScreen from './screens/HabitScreen';       // Habit tracker screen
-
-const Stack = createNativeStackNavigator();
-=======
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   FlatList,
@@ -30,9 +19,14 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { ProfileScreen, DoneScreen, UndoneScreen } from './components/DummyScreen';
 
+import ProfileScreen from './screens/ProfileScreen';
+import HabitScreen from './screens/HabitScreen';
+// You’ll need to define these screens too:
+const DoneScreen = () => <Text>Done Screen</Text>;
+const UndoneScreen = () => <Text>Undone Screen</Text>;
 
 type Habit = {
   id: string;
@@ -171,53 +165,49 @@ function HomeScreen() {
     </View>
   );
 }
->>>>>>> b8b60eab267365b5a160c563e3f1f922ed74fa42
 
-
-
+// Tab Navigator
 const Tab = createBottomTabNavigator();
+
+function TabScreens() {
+  return (
+    <Tab.Navigator screenOptions={getScreenOptions}>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Done" component={DoneScreen} />
+      <Tab.Screen name="Undone" component={UndoneScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
 
 const getScreenOptions = ({ route }: { route: { name: string } }) => ({
   headerShown: false,
   tabBarIcon: ({ color, size }: { color: string; size: number }) => {
     let iconName = 'home';
-
     if (route.name === 'Profile') iconName = 'account';
     else if (route.name === 'Done') iconName = 'check-circle';
     else if (route.name === 'Undone') iconName = 'close-circle';
-
     return <Icon name={iconName} size={size} color={color} />;
   },
   tabBarActiveTintColor: '#7C4DFF',
   tabBarInactiveTintColor: 'gray',
 });
 
+// Stack Navigator
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   return (
-<<<<<<< HEAD
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{ headerShown: false }}
-      >
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Habit" component={HabitScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-=======
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
         <NavigationContainer>
-          <Tab.Navigator screenOptions={getScreenOptions}>
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Done" component={DoneScreen} />
-            <Tab.Screen name="Undone" component={UndoneScreen} />
-            <Tab.Screen name="Profile" component={ProfileScreen} />
-          </Tab.Navigator>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Tabs" component={TabScreens} />
+            <Stack.Screen name="Habit" component={HabitScreen} />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+          </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
     </SafeAreaProvider>
->>>>>>> b8b60eab267365b5a160c563e3f1f922ed74fa42
   );
 }
